@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 
+import { setSelectedQuestionId } from '../../stores/selectedQuestionId/selectedQuestionIdSlice';
 import {
-  addQestion,
-  deleteQestion,
-  moveDownQestion,
-  moveUpQestion,
+  addQuestion,
+  deleteQuestion,
+  moveDownQuestion,
+  moveUpQuestion,
 } from '../../stores/survey/surveySlice';
 import AddButton from '../AddButton';
 import Body from '../Body';
@@ -12,31 +13,38 @@ import Card from '../Card';
 
 function PreviewSection() {
   const questions = useSelector((state) => state.survey.data?.questions || []);
+  const selectedQuestionId = useSelector(
+    (state) => state.selectedQuestionId.data,
+  );
 
   const dispatch = useDispatch();
 
   const handleAddQuestion = (type) => {
-    dispatch(addQestion(type));
+    dispatch(addQuestion(type));
   };
   const handleMoveUpQustion = (index) => {
     if (index === 0) {
       return;
     }
 
-    dispatch(moveUpQestion(index));
+    dispatch(moveUpQuestion(index));
   };
   const handleMoveDownQuestion = (index) => {
     if (index === questions.length - 1) {
       return;
     }
 
-    dispatch(moveDownQestion(index));
+    dispatch(moveDownQuestion(index));
   };
   const handleDeleteQuestion = (index) => {
-    dispatch(deleteQestion(index));
+    dispatch(deleteQuestion(index));
+  };
+  const handleCardClick = (index) => {
+    console.log('index', index);
+    dispatch(setSelectedQuestionId(index));
   };
 
-  console.log('questions111', questions);
+  console.log('selectedQuestionId', selectedQuestionId);
   return (
     <div>
       {questions.map((question, index) => (
@@ -47,11 +55,13 @@ function PreviewSection() {
           onUpButtonClick={() => handleMoveUpQustion(index)}
           onDownButtonClick={() => handleMoveDownQuestion(index)}
           onDeleteButtonClick={() => handleDeleteQuestion(index)}
+          onClick={() => handleCardClick(index)}
+          isSelected={selectedQuestionId === index}
         >
           <Body type={question.type} options={question.options} />
         </Card>
       ))}
-      <AddButton addQestion={handleAddQuestion} />
+      <AddButton addQuestion={handleAddQuestion} />
     </div>
   );
 }

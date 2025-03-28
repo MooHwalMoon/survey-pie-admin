@@ -3,7 +3,7 @@ import { Button, Popover } from 'antd';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-function AddButton({ addQestion }) {
+function AddButton({ addQuestion }) {
   const [visible, setVisible] = useState(false);
 
   const hide = () => {
@@ -25,7 +25,7 @@ function AddButton({ addQestion }) {
               type="text"
               onClick={() => {
                 hide();
-                addQestion('select');
+                addQuestion('select');
               }}
               style={{ display: 'block' }}
             >
@@ -35,7 +35,7 @@ function AddButton({ addQestion }) {
               type="text"
               onClick={() => {
                 hide();
-                addQestion('text');
+                addQuestion('text');
               }}
               style={{ display: 'block' }}
             >
@@ -45,7 +45,7 @@ function AddButton({ addQestion }) {
               type="text"
               onClick={() => {
                 hide();
-                addQestion('textarea');
+                addQuestion('textarea');
               }}
               style={{ display: 'block' }}
             >

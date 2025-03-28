@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  data: null,
+  data: {
+    title: '',
+    questions: [],
+  },
   loading: false,
   error: null,
 };
@@ -11,12 +14,11 @@ export const surveySlice = createSlice({
   initialState,
   reducers: {
     setTitle: (state, action) => {
-      console.log('action', action.type);
       state.data.title = action.payload;
     },
-    addQestion: (state, action) => {
+    addQuestion: (state, action) => {
       const type = action.payload;
-      console.log('action', action.type);
+
       let options = {};
       if (type === 'text' || type === 'textarea') {
         options = {
@@ -33,30 +35,27 @@ export const surveySlice = createSlice({
       state.data.questions.push({
         title: 'Untitled',
         desc: '',
-        type: type,
+        type,
         required: false,
-        options: options,
+        options,
       });
     },
-    moveUpQestion: (state, action) => {
+    moveUpQuestion: (state, action) => {
       const index = action.payload;
 
       const temp = state.data.questions[index];
       state.data.questions[index] = state.data.questions[index - 1];
       state.data.questions[index - 1] = temp;
     },
-
-    moveDownQestion: (state, action) => {
+    moveDownQuestion: (state, action) => {
       const index = action.payload;
 
       const temp = state.data.questions[index];
       state.data.questions[index] = state.data.questions[index + 1];
       state.data.questions[index + 1] = temp;
     },
-    deleteQestion: (state, action) => {
-      const index = action.payload;
-
-      state.data.questions.splice(index, 1);
+    deleteQuestion: (state, action) => {
+      state.data.questions.splice(action.payload, 1);
     },
     setSurvey: (state, action) => {
       state.data = action.payload;
@@ -67,19 +66,23 @@ export const surveySlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    setQuestion: (state, action) => {
+      const index = action.payload.index;
+      state.data.questions[index] = action.payload.data;
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
 export const {
   setTitle,
-  addQestion,
-  moveUpQestion,
-  moveDownQestion,
-  deleteQestion,
+  addQuestion,
+  moveUpQuestion,
+  moveDownQuestion,
+  deleteQuestion,
   setSurvey,
   setLoading,
   setError,
+  setQuestion,
 } = surveySlice.actions;
 
 export default surveySlice.reducer;
